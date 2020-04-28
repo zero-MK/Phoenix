@@ -36,6 +36,27 @@ For more information on how to get started, see the [getting started](https://ex
 
 我的做题环境是用 IDA， Ghidra， cutter，pwntools，gdb ，所以我把 Phoenix 提供的 deb 解包，然后拿出里面的 binary 分析
 
+这是我以前构建用来解题的 docker 
+
+via：https://hub.docker.com/repository/docker/1565328054/pwn
+
+```
+docker run -it --privileged pwn /bin/zsh
+```
+
+构建的时候我还很  “年轻”（sb） 没有考虑  layer 等一些因素，很臃肿，不管了，懒得写 Dockfile 重新构建了，把 Phoenix 装上去就好了
+
+ 已经装好了 
+
+- gdb 以及 pwndbg
+- pwntools
+- Phoenix（binary 在 /opt/Phoenix/，或者 /root/exploit(一个软链接)）
+- 还有一堆乱七八糟的东西（tmux，zsh。。。。）
+
+
+
+这是获取 Phoenix 里面的 binary 的方法
+
 ```bash
 wget https://github.com/ExploitEducation/Phoenix/releases/download/v1.0.0-alpha-3/exploit-education-phoenix_1.0.0-_amd64.deb 
 
@@ -50,4 +71,3 @@ dpkg -X exploit-education-phoenix_1.0.0-_amd64.deb
 sudo dpkg -i exploit-education-phoenix_1.0.0-_amd64.deb
 ```
 
-好了开始
