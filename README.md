@@ -34,15 +34,15 @@ For more information on how to get started, see the [getting started](https://ex
 
 抱怨了那么多，开始吧
 
-我的做题环境是用 IDA， Ghidra， cutter，pwntools，gdb 的，所以我把 Phoenix 提供的 deb 解包，然后拿出里面的 binnary 分析的
+我的做题环境是用 IDA， Ghidra， cutter，pwntools，gdb ，所以我把 Phoenix 提供的 deb 解包，然后拿出里面的 binary 分析
 
 ```bash
-wget https://github.com/ExploitEducation/Phoenix/releases/download/v1.0.0-alpha-3/exploit-education-phoenix_1.0.0-_amd64.deb
+wget https://github.com/ExploitEducation/Phoenix/releases/download/v1.0.0-alpha-3/exploit-education-phoenix_1.0.0-_amd64.deb 
 
 dpkg -X exploit-education-phoenix_1.0.0-_amd64.deb
 ```
 
-解压出来两个文件夹，bin 都在 opt/Phoenix 里面
+解压出来两个文件夹，binary 都在 opt/Phoenix 里面
 
 当然你也可以直接安装
 
