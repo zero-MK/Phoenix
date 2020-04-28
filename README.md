@@ -41,6 +41,7 @@ For more information on how to get started, see the [getting started](https://ex
 via：https://hub.docker.com/repository/docker/1565328054/pwn
 
 ```
+docker pull 1565328054/pwn
 docker run -it --privileged pwn /bin/zsh
 ```
 
