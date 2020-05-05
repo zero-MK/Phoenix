@@ -230,3 +230,64 @@ strncpy(local_a8 + sVar1,param_1,__n);
 ![image-20200429231218394](image-20200429231218394.png)
 
 有人解出来了告诉我一下
+
+
+
+现在是 2010-05-05 01：37：27
+
+之前我想破脑袋也想不出来，在能控制 rbp 最低一个 Byte 怎么能在有 ASLR 的情况下泄露出输入的内容的地址
+
+我现在才想起来，官方给的环境是不开 ASLR 的，cao
+
+这就简单多了，其实可以吧 shellcode 放到输入的开头，没有 ALSR 的情况下，在 greet 里面 rbp 的值是不会变的，只要拿 rbp 的值的最后一个 Byte 加上 local_a8 在栈上的偏移量，只要不超过 0xff ，把这个值盖到 rbp 的最低一位，在 leave 函数执行 `
+
+![image-20200505015033307](image-20200505015033307.png)
+
+这个 buffer 是放在栈上的，也就是：
+
+![image-20200505021222307](image-20200505021222307.png)
+
+它距离 rbp 是 0xa0
+
+只要知道 rbp 的值就能计算
+
+![image-20200505021923784](image-20200505021923784.png)
+
+rbp 的值是：`0x7fffffffe510`
+
+最低一位是 0x10 加上 local_a8 的偏移量 0xa0 ，等于 ：0xb0
+
+只要把 rbp 的最低一个字节覆盖成 0xb0 ，rbp 存的就是我们输入的东西的地址
+
+在函数返回时：
+
+```asm
+   0x400791 <greet+148>    add    rsp, 0xa8
+   0x400798 <greet+155>    pop    rbx
+   0x400799 <greet+156>    pop    rbp
+   0x40079a <greet+157>    ret
+```
+
+把 rsp 加 0xa8
+
+pop rbx
+
+pop rbp
+
+其实就是把 `0x7fffffffe5b0` 放进 rbp
+
+然后，返回 main 函数
+
+在 main 函数里面有：
+
+```
+   0x4007f1       <main+86>    mov    eax, 0
+   0x4007f6       <main+91>    leave
+   0x4007f7       <main+92>    ret
+```
+
+这个 leave 指令相当于
+
+` mov rsp,rbp`
+
+`ret` 相当于 `pip rip` 从栈上拿一个地址，然后跳到那里去执行
